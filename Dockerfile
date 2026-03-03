@@ -1,16 +1,13 @@
-FROM golang:1.22-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
 RUN apk add --no-cache ca-certificates git
 
-COPY go.mod ./
-COPY go.sum . 2>/dev/null || true
-RUN go mod download
-
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/api ./cmd/api
+RUN go mod tidy && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin/api ./cmd/api
 
 FROM gcr.io/distroless/base-debian12 AS runtime
 

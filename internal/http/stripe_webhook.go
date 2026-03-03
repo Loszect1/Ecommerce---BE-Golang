@@ -129,7 +129,7 @@ func applyPaymentIntentEvent(ctx context.Context, deps Dependencies, event strip
 		return false, err
 	}
 
-	inserted, err := deps.Payments.InsertLogIfNew(ctx, tx, updatedPayment.ID, event.Type, event.ID, json.RawMessage(rawPayload))
+	inserted, err := deps.Payments.InsertLogIfNew(ctx, tx, updatedPayment.ID, string(event.Type), event.ID, json.RawMessage(rawPayload))
 	if err != nil {
 		return false, err
 	}
