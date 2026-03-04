@@ -1,0 +1,23 @@
+# Rename the app value below to something globally unique, e.g. ecommerce-be-yourname
+app = "ecommerce-be"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  APP_ENV    = "production"
+  HTTP_PORT  = "8080"
+  STRIPE_CURRENCY = "USD"
+
+[http_service]
+  internal_port        = 8080
+  force_https          = true
+  auto_stop_machines   = "stop"
+  auto_start_machines  = true
+  min_machines_running = 1
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus     = 1
+  memory   = "256mb"
