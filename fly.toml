@@ -1,5 +1,5 @@
 # Rename the app value below to something globally unique, e.g. ecommerce-be-yourname
-app = "ecommerce-be"
+app = "ecommerce-backend-go"
 primary_region = "iad"
 
 [build]
