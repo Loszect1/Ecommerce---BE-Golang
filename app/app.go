@@ -13,7 +13,7 @@ import (
 	"github.com/Loszect1/Ecommerce---BE-Golang/internal/logger"
 	"github.com/Loszect1/Ecommerce---BE-Golang/internal/oauth"
 	"github.com/Loszect1/Ecommerce---BE-Golang/internal/repository"
-	"github.com/Loszect1/Ecommerce---BE-Golang/internal/config"
+	"github.com/Loszect1/Ecommerce---BE-Golang/config"
 )
 
 // Config is an alias to the shared configuration struct.
@@ -84,4 +84,3 @@ func New(cfg Config) http.Handler {
 
 	return router
 }
-

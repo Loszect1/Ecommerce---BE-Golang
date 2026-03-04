@@ -4,9 +4,10 @@ import (
 	"context"
 	"net/http"
 	"sync"
+	"time"
 
-	"github.com/Loszect1/Ecommerce---BE-Golang/internal/app"
-	"github.com/Loszect1/Ecommerce---BE-Golang/internal/config"
+	"github.com/Loszect1/Ecommerce---BE-Golang/app"
+	"github.com/Loszect1/Ecommerce---BE-Golang/config"
 )
 
 var (
