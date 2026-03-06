@@ -42,6 +42,7 @@ func NewRouter(deps Dependencies) http.Handler {
 	r.Use(chimw.RequestID)
 	r.Use(chimw.RealIP)
 	r.Use(chimw.Recoverer)
+	r.Use(CORSMiddleware)
 	r.Use(LoggingMiddleware(deps.Log))
 	r.Use(RecoverMiddleware(deps.Log))
 	r.Use(RequestIDMiddleware)

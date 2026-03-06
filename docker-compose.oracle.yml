@@ -1,0 +1,50 @@
+# Docker Compose for Oracle Cloud Free (Always Free VM)
+# Chạy: docker compose -f docker-compose.oracle.yml up -d
+# Cần tạo file .env (copy từ .env.example) trước khi chạy.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ecommerce}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-ecommerce}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/0001_init.sql:/docker-entrypoint-initdb.d/0001_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ecommerce} -d ${POSTGRES_DB:-ecommerce}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      APP_ENV: production
+      HTTP_PORT: "8080"
+      POSTGRES_DSN: "postgres://${POSTGRES_USER:-ecommerce}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ecommerce}?sslmode=disable"
+    ports:
+      - "8080:8080"
+    networks:
+      - app
+
+volumes:
+  postgres_data:
+
+networks:
+  app:
+    driver: bridge

@@ -1,0 +1,28 @@
+# Chạy chỉ API, kết nối Neon (hoặc Postgres bên ngoài). Không chạy container Postgres.
+# Cần file .env có POSTGRES_DSN=postgresql://...
+# Chạy: docker compose -f docker-compose.dev-neon.yml up -d --build
+# Lần đầu: chạy migration trên Neon (Neon Console SQL Editor hoặc psql) với nội dung migrations/0001_init.sql
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-api-dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      HTTP_PORT: "8080"
+      JWT_SECRET: "dev-jwt-secret-min-32-chars-long"
+      REDIS_ADDR: ""
+      REDIS_PASSWORD: ""
+    ports:
+      - "8080:8080"
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
